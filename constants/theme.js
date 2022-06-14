@@ -7,5 +7,8 @@ export const FONTS = {
 };
 
 export const COLORS = {
-  main: "#910504",
+  secondary: "#FCD29F",
+  // secondary: "#FCD7AD",
+  // secondary: "#EED7C5",
+  primary: "#F15025",
 };
