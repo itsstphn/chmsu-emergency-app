@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 import bannerImage from "../assets/images/CHMSU.jpg";
 
 import { COLORS, FONTS } from "./../constants/theme";
@@ -8,13 +8,12 @@ import todo from "../assets/images/todo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBullhorn,
-  faHandHoldingMedical,
   faLocationDot,
   faPeopleRoof,
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   return (
     <View style={styles.homeContainer}>
       <HomeHeader></HomeHeader>
@@ -29,23 +28,28 @@ const Home = () => {
             Enclaro, Binalbagan, Negros Occidental
           </Text>
         </View>
-        <View style={styles.todo}>
-          <View style={styles.todoImageContainer}>
-            <Image source={todo} style={styles.todoImage}></Image>
-          </View>
-          <View style={styles.todoTextContainer}>
-            <Text
-              style={[
-                styles.todoText,
-                { fontSize: 20, fontFamily: FONTS.bold },
-              ]}
-            >
-              WHAT TO DO?
-            </Text>
-            <Text style={styles.todoText}>
-              Before, During, After{"\n"}Disasters
-            </Text>
-          </View>
+        <View style={styles.outerTodo}>
+          <Pressable
+            style={styles.innerTodo}
+            android_ripple={{ color: COLORS.ripplePrimary }}
+          >
+            <View style={styles.todoImageContainer}>
+              <Image source={todo} style={styles.todoImage}></Image>
+            </View>
+            <View style={styles.todoTextContainer}>
+              <Text
+                style={[
+                  styles.todoText,
+                  { fontSize: 20, fontFamily: FONTS.bold },
+                ]}
+              >
+                WHAT TO DO
+              </Text>
+              <Text style={styles.todoText}>
+                Before, During, After{"\n"}Disasters?
+              </Text>
+            </View>
+          </Pressable>
         </View>
 
         <Text style={styles.menuTitle}>Emergency Services</Text>
@@ -58,23 +62,34 @@ const Home = () => {
               justifyContent: "space-between",
             }}
           >
-            <View style={[styles.menuButton]}>
-              <FontAwesomeIcon
-                style={[styles.icon, { marginTop: -10 }]}
-                size={40}
-                icon={faTriangleExclamation}
-              ></FontAwesomeIcon>
+            <View style={styles.outerMenuButton}>
+              <Pressable
+                android_ripple={{ color: COLORS.ripplePrimary }}
+                style={styles.innerMenuButton}
+                onPress={() => navigation.navigate("Help")}
+              >
+                <FontAwesomeIcon
+                  style={[styles.icon, { marginTop: -10 }]}
+                  size={40}
+                  icon={faTriangleExclamation}
+                ></FontAwesomeIcon>
 
-              <Text style={styles.menuText}>Help Me</Text>
+                <Text style={styles.menuText}>Help Me</Text>
+              </Pressable>
             </View>
 
-            <View style={styles.menuButton}>
-              <FontAwesomeIcon
-                style={styles.icon}
-                icon={faPeopleRoof}
-                size={40}
-              ></FontAwesomeIcon>
-              <Text style={styles.menuText}>Safety{"\n"}Locations</Text>
+            <View style={styles.outerMenuButton}>
+              <Pressable
+                android_ripple={{ color: COLORS.ripplePrimary }}
+                style={styles.innerMenuButton}
+              >
+                <FontAwesomeIcon
+                  style={styles.icon}
+                  icon={faPeopleRoof}
+                  size={40}
+                ></FontAwesomeIcon>
+                <Text style={styles.menuText}>Safety{"\n"}Locations</Text>
+              </Pressable>
             </View>
           </View>
           <View
@@ -85,13 +100,18 @@ const Home = () => {
               // alignItems: "center",
             }}
           >
-            <View style={styles.menuButton}>
-              <FontAwesomeIcon
-                style={[styles.icon, { marginTop: -10 }]}
-                size={40}
-                icon={faBullhorn}
-              ></FontAwesomeIcon>
-              <Text style={styles.menuText}>Announcements</Text>
+            <View style={styles.outerMenuButton}>
+              <Pressable
+                android_ripple={{ color: COLORS.ripplePrimary }}
+                style={styles.innerMenuButton}
+              >
+                <FontAwesomeIcon
+                  style={[styles.icon, { marginTop: -10 }]}
+                  size={40}
+                  icon={faBullhorn}
+                ></FontAwesomeIcon>
+                <Text style={styles.menuText}>Announcements</Text>
+              </Pressable>
             </View>
           </View>
         </View>
@@ -129,23 +149,31 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
 
-  todo: {
+  outerTodo: {
     alignSelf: "center",
-    width: "85%",
+    width: 320,
     height: 120,
     marginBottom: 30,
     borderRadius: 20,
-    flexDirection: "row",
-    padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.primary,
     elevation: 3,
+    overflow: "hidden",
     // alignItems: "center",
+  },
+  innerTodo: {
+    flex: 1,
+    flexDirection: "row",
+    padding: 15,
+    // width: "100%",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   todoImageContainer: {
     justifyContent: "center",
     alignItems: "center",
     width: 110,
     height: 85,
+    marginLeft: 5,
   },
 
   todoImage: {
@@ -159,7 +187,7 @@ const styles = StyleSheet.create({
   todoText: {
     fontFamily: FONTS.regular,
     fontSize: 14,
-    color: COLORS.primary,
+    color: "#fff",
     textAlign: "center",
   },
   menuTitle: {
@@ -171,12 +199,10 @@ const styles = StyleSheet.create({
 
   menuContainer: {
     marginTop: 10,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
 
     flex: 1,
     width: 350,
-    backgroundColor: "#fff",
+
     // justifySelf: "center",
     // alignSelf: "center",
     // justifyContent: "space-between",
@@ -184,27 +210,29 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 
-  menuButton: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: COLORS.secondary,
-
+  outerMenuButton: {
     width: 140,
     height: 140,
     borderRadius: 32,
+    overflow: "hidden",
+    margin: 10,
+    backgroundColor: COLORS.primary,
+    // elevation: 2,
+  },
+  innerMenuButton: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    margin: 10,
   },
   icon: {
-    color: COLORS.primary,
+    color: "#fff",
     // marginTop: -10,
     margin: 5,
   },
 
   menuText: {
     fontSize: 14,
-    color: COLORS.primary,
+    color: "#fff",
     fontFamily: FONTS.semiBold,
     textAlign: "center",
     alignSelf: "center",

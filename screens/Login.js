@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Image,
@@ -6,12 +6,30 @@ import {
   Text,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
 import logo from "../assets/images/chmsu-logo.jpg";
 import { COLORS, FONTS } from "./../constants/theme";
 import { StatusBar } from "expo-status-bar";
 
 const Login = ({ navigation }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  let loginAttempt = 0;
+
+  const handleLoginPress = () => {
+    if (loginAttempt === 0) {
+      Alert.alert(
+        "Wrong password sa pagkabigaon mo",
+        "Oh what happen \nAre you krissy? paakyuu"
+      );
+      loginAttempt++;
+    } else {
+      navigation.navigate("Home");
+    }
+  };
+
   return (
     <View style={styles.loginContainer}>
       <StatusBar></StatusBar>
@@ -24,7 +42,11 @@ const Login = ({ navigation }) => {
         </Text>
       </View>
       <View style={styles.formContainer}>
-        <TextInput placeholder="Username" style={styles.formInput}></TextInput>
+        <TextInput
+          keyboardType="email-address"
+          placeholder="Username"
+          style={styles.formInput}
+        ></TextInput>
         <TextInput
           secureTextEntry
           placeholder="Password"
@@ -34,7 +56,7 @@ const Login = ({ navigation }) => {
           <Pressable
             android_ripple={{ color: "#140152" }}
             style={styles.innerButton}
-            onPress={() => navigation.navigate("Home")}
+            onPress={handleLoginPress}
           >
             <Text style={styles.buttonText}>LOGIN</Text>
           </Pressable>
@@ -92,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     fontSize: 18,
     fontFamily: FONTS.regular,
-    color: "#333",
+    color: COLORS.primary,
     elevation: 3,
   },
   outerButton: {

@@ -4,11 +4,10 @@
     "slug": "chmsu-emergency",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/chmsu-logo.jpg",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-
     "splash": {
-      "image": "./assets/images/chmsu-logo.jpg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -24,10 +23,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "package": "com.itsstphn.chmsuemergency"
     },
     "web": {
-      "favicon": "./assets/images/message.png"
+      "favicon": "./assets/icon.png"
     }
   }
 }

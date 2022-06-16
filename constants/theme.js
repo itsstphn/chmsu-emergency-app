@@ -11,4 +11,5 @@ export const COLORS = {
   // secondary: "#FCD7AD",
   // secondary: "#EED7C5",
   primary: "#F15025",
+  ripplePrimary: "#ba401e",
 };

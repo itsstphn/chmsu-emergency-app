@@ -6,6 +6,7 @@ import Home from "./screens/Home";
 const Stack = createNativeStackNavigator();
 import { useFonts } from "expo-font";
 import Login from "./screens/Login";
+import Helpme from "./screens/Helpme";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -25,6 +26,7 @@ export default function App() {
       >
         <Stack.Screen name="Login" component={Login}></Stack.Screen>
         <Stack.Screen name="Home" component={Home}></Stack.Screen>
+        <Stack.Screen name="Help" component={Helpme}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

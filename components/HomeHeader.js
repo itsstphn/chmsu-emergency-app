@@ -5,6 +5,34 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
 
 const HomeHeader = () => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  const d = new Date();
+  let date = d.getDate();
+  let month = months[d.getMonth()];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  let day = days[d.getDay()];
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerTextContainer}>
@@ -15,11 +43,13 @@ const HomeHeader = () => {
       </View>
       <View style={styles.weatherContainer}>
         <FontAwesomeIcon
-          style={{ color: "#fff" }}
+          style={{ color: COLORS.primary }}
           size={60}
           icon={faCloudSun}
         />
-        <Text style={styles.weatherText}>Saturday, June 11</Text>
+        <Text style={styles.weatherText}>
+          {day}, {month} {date}
+        </Text>
         <Text style={styles.weatherText}>Enclaro, Mostly Cloudy</Text>
 
         <Text style={[styles.weatherText, { fontSize: 25 }]}>30°C</Text>
@@ -36,7 +66,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: "90%",
     paddingHorizontal: 20,
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#fff",
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 15,
@@ -48,7 +78,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: FONTS.bold,
     fontSize: 12,
-    color: "#fff",
+    color: COLORS.primary,
   },
   weatherContainer: {
     flex: 1,
@@ -57,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   weatherText: {
-    color: "#fff",
+    color: COLORS.primary,
     fontFamily: FONTS.bold,
     fontSize: 10,
   },
