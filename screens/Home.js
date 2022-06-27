@@ -32,6 +32,7 @@ const Home = ({ navigation }) => {
           <Pressable
             style={styles.innerTodo}
             android_ripple={{ color: COLORS.ripplePrimary }}
+            onPress={() => navigation.navigate("ToDo")}
           >
             <View style={styles.todoImageContainer}>
               <Image source={todo} style={styles.todoImage}></Image>
@@ -82,6 +83,7 @@ const Home = ({ navigation }) => {
               <Pressable
                 android_ripple={{ color: COLORS.ripplePrimary }}
                 style={styles.innerMenuButton}
+                onPress={() => navigation.navigate("SafetyLocations")}
               >
                 <FontAwesomeIcon
                   style={styles.icon}
@@ -104,6 +106,7 @@ const Home = ({ navigation }) => {
               <Pressable
                 android_ripple={{ color: COLORS.ripplePrimary }}
                 style={styles.innerMenuButton}
+                onPress={() => navigation.navigate("Announcements")}
               >
                 <FontAwesomeIcon
                   style={[styles.icon, { marginTop: -10 }]}
@@ -198,7 +201,7 @@ const styles = StyleSheet.create({
   },
 
   menuContainer: {
-    marginTop: 10,
+    // marginTop: 5,
 
     flex: 1,
     width: 350,
@@ -207,7 +210,7 @@ const styles = StyleSheet.create({
     // alignSelf: "center",
     // justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
+    padding: 12,
   },
 
   outerMenuButton: {

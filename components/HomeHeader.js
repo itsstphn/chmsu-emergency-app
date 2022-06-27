@@ -37,7 +37,7 @@ const HomeHeader = () => {
     <View style={styles.headerContainer}>
       <View style={styles.headerTextContainer}>
         <Text style={[styles.headerText]}>CHMSU{"\n"}BINALBAGAN</Text>
-        <Text style={[styles.headerText, { fontSize: 29 }]}>
+        <Text style={[styles.headerText, { fontSize: 25 }]}>
           EMERGENCY RESPONSE
         </Text>
       </View>

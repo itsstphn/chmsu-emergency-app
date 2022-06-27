@@ -8,6 +8,7 @@ export const FONTS = {
 
 export const COLORS = {
   secondary: "#FCD29F",
+  rippleSecondary: "#c5a276",
   // secondary: "#FCD7AD",
   // secondary: "#EED7C5",
   primary: "#F15025",

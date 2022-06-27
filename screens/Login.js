@@ -20,10 +20,11 @@ const Login = ({ navigation }) => {
 
   const handleLoginPress = () => {
     if (loginAttempt === 0) {
-      Alert.alert(
-        "Wrong password sa pagkabigaon mo",
-        "Oh what happen \nAre you krissy? paakyuu"
-      );
+      Alert.alert("Wrong username or password", "Please try again", [
+        {
+          text: "Ok fine",
+        },
+      ]);
       loginAttempt++;
     } else {
       navigation.navigate("Home");
@@ -54,7 +55,7 @@ const Login = ({ navigation }) => {
         ></TextInput>
         <View style={styles.outerButton}>
           <Pressable
-            android_ripple={{ color: "#140152" }}
+            android_ripple={{ color: COLORS.ripplePrimary }}
             style={styles.innerButton}
             onPress={handleLoginPress}
           >
@@ -65,8 +66,8 @@ const Login = ({ navigation }) => {
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          A Capstone Project by Bless Sumagaysay, Micah Limaco, and Leonardo Da
-          Vinci
+          A Capstone Project by Bless Sumagaysay, Micah Limaco, and Chris
+          Fernandez
         </Text>
       </View>
     </View>

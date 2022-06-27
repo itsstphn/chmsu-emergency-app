@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import { COLORS } from "../constants/theme";
 import { FONTS } from "./../constants/theme";
@@ -8,27 +8,21 @@ import {
   faMessage,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
+import PageHeader from "../components/PageHeader";
+import InputLocation from "./../components/InputLocation";
 
 const Helpme = ({ navigation }) => {
+  const [selectBuilding, setSelectBuilding] = useState(true);
+
   return (
     <View style={styles.helpContainer}>
-      <View style={styles.headerContainer}>
-        <View style={styles.outerBackButton}>
-          <Pressable
-            onPress={() => navigation.goBack()}
-            android_ripple={{ color: COLORS.ripplePrimary }}
-            style={styles.innerBackButton}
-          >
-            <FontAwesomeIcon
-              style={styles.iconBackButton}
-              size={25}
-              icon={faArrowLeft}
-            ></FontAwesomeIcon>
-          </Pressable>
-        </View>
-        <Text style={styles.pageTitle}>Help Me</Text>
-      </View>
-      <View style={styles.mainSection}>
+      <PageHeader
+        rippleColor={COLORS.ripplePrimary}
+        pageTitle="Help Me"
+        textColor={"#fff"}
+        navigation={navigation}
+      ></PageHeader>
+      <View style={styles.actionSection}>
         <View style={styles.actionsContainer}>
           <View style={styles.outerActionButton}>
             <Pressable
@@ -37,7 +31,7 @@ const Helpme = ({ navigation }) => {
             >
               <FontAwesomeIcon
                 style={styles.icon}
-                size={50}
+                size={25}
                 icon={faPhone}
               ></FontAwesomeIcon>
             </Pressable>
@@ -55,13 +49,20 @@ const Helpme = ({ navigation }) => {
             >
               <FontAwesomeIcon
                 style={styles.icon}
-                size={50}
+                size={25}
                 icon={faMessage}
               ></FontAwesomeIcon>
             </Pressable>
           </View>
           <Text style={styles.actionText}>Message NDRRMO</Text>
         </View>
+      </View>
+      <View style={styles.locationSection}>
+        <Text style={styles.sectionTitle}>Your Location</Text>
+        <InputLocation
+          selectBuilding={selectBuilding}
+          setSelectBuilding={setSelectBuilding}
+        ></InputLocation>
       </View>
     </View>
   );
@@ -75,26 +76,9 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: COLORS.primary,
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
-  headerContainer: {
-    marginVertical: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  outerBackButton: {
-    marginLeft: -20,
-    overflow: "hidden",
 
-    width: 60,
-    height: 60,
-
-    borderRadius: 60 / 2,
-  },
-  innerBackButton: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   iconBackButton: {
     color: "#fff",
   },
@@ -103,8 +87,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 28,
   },
-  mainSection: {
-    flex: 1,
+  actionSection: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -114,8 +98,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   outerActionButton: {
-    height: 140,
-    width: 140,
+    height: 100,
+    width: 100,
     backgroundColor: "#fff",
     borderRadius: 140 / 2,
     overflow: "hidden",
@@ -133,6 +117,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: FONTS.semiBold,
     color: "#fff",
-    fontSize: 18,
+    fontSize: 14,
+  },
+  locationSection: {
+    flex: 1,
+    marginTop: 10,
+  },
+  sectionTitle: {
+    color: "#fff",
+    fontSize: 24,
+    fontFamily: FONTS.semiBold,
+    margin: 10,
   },
 });
