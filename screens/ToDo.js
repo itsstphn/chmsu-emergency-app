@@ -21,6 +21,9 @@ const ToDo = ({ navigation }) => {
             <Pressable
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
+              onPress={() =>
+                navigation.navigate("DisasterTodo", { disaster: "flood" })
+              }
             >
               <Image
                 style={styles.itemImage}
@@ -33,6 +36,9 @@ const ToDo = ({ navigation }) => {
             <Pressable
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
+              onPress={() =>
+                navigation.navigate("DisasterTodo", { disaster: "earthquake" })
+              }
             >
               <Image
                 style={styles.itemImage}
@@ -45,12 +51,15 @@ const ToDo = ({ navigation }) => {
             <Pressable
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
+              onPress={() =>
+                navigation.navigate("DisasterTodo", { disaster: "typhoon" })
+              }
             >
               <Image
                 style={styles.itemImage}
                 source={require("../assets/images/storm.png")}
               ></Image>
-              <Text style={styles.itemText}>Storm</Text>
+              <Text style={styles.itemText}>Typhoon</Text>
             </Pressable>
           </View>
         </View>
@@ -59,6 +68,9 @@ const ToDo = ({ navigation }) => {
             <Pressable
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
+              onPress={() =>
+                navigation.navigate("DisasterTodo", { disaster: "fire" })
+              }
             >
               <Image
                 style={styles.itemImage}

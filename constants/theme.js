@@ -7,10 +7,10 @@ export const FONTS = {
 };
 
 export const COLORS = {
-  secondary: "#FCD29F",
+  secondary: "#90E39A",
   rippleSecondary: "#c5a276",
   // secondary: "#FCD7AD",
   // secondary: "#EED7C5",
-  primary: "#F15025",
-  ripplePrimary: "#ba401e",
+  primary: "#2eb614",
+  ripplePrimary: "#2b8419",
 };

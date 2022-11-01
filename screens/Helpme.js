@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import { COLORS } from "../constants/theme";
-import { FONTS } from "./../constants/theme";
+import { FONTS } from "../constants/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faArrowLeft,
@@ -9,7 +9,7 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import PageHeader from "../components/PageHeader";
-import InputLocation from "./../components/InputLocation";
+import InputLocation from "../components/InputLocation";
 
 const Helpme = ({ navigation }) => {
   const [selectBuilding, setSelectBuilding] = useState(true);
@@ -18,51 +18,39 @@ const Helpme = ({ navigation }) => {
     <View style={styles.helpContainer}>
       <PageHeader
         rippleColor={COLORS.ripplePrimary}
-        pageTitle="Help Me"
+        pageTitle="Calling..."
         textColor={"#fff"}
         navigation={navigation}
       ></PageHeader>
-      <View style={styles.actionSection}>
-        <View style={styles.actionsContainer}>
-          <View style={styles.outerActionButton}>
-            <Pressable
-              android_ripple={{ color: "#ccc" }}
-              style={styles.innerActionButton}
-            >
-              <FontAwesomeIcon
-                style={styles.icon}
-                size={25}
-                icon={faPhone}
-              ></FontAwesomeIcon>
-            </Pressable>
-          </View>
-          <Text style={styles.actionText}>Call NDRRMO</Text>
+      <View style={styles.actionsContainer}>
+        <View style={styles.outerActionButton}>
+          <Pressable
+            android_ripple={{ color: "#ccc" }}
+            style={styles.innerActionButton}
+          >
+            <FontAwesomeIcon
+              style={styles.icon}
+              size={25}
+              icon={faPhone}
+            ></FontAwesomeIcon>
+          </Pressable>
         </View>
-
-        <View
-          style={[styles.actionsContainer, { justifyContent: "flex-start" }]}
-        >
-          <View style={styles.outerActionButton}>
-            <Pressable
-              android_ripple={{ color: "#ccc" }}
-              style={styles.innerActionButton}
-            >
-              <FontAwesomeIcon
-                style={styles.icon}
-                size={25}
-                icon={faMessage}
-              ></FontAwesomeIcon>
-            </Pressable>
-          </View>
-          <Text style={styles.actionText}>Message NDRRMO</Text>
-        </View>
+        <Text style={styles.actionText}>Calling</Text>
       </View>
-      <View style={styles.locationSection}>
-        <Text style={styles.sectionTitle}>Your Location</Text>
-        <InputLocation
-          selectBuilding={selectBuilding}
-          setSelectBuilding={setSelectBuilding}
-        ></InputLocation>
+      <View style={styles.actionsContainer}>
+        <View style={styles.outerActionButton}>
+          <Pressable
+            android_ripple={{ color: "#ccc" }}
+            style={styles.innerActionButton}
+          >
+            <FontAwesomeIcon
+              style={[styles.icon, { color: "red" }]}
+              size={25}
+              icon={faPhone}
+            ></FontAwesomeIcon>
+          </Pressable>
+        </View>
+        <Text style={styles.actionText}>End Call</Text>
       </View>
     </View>
   );
@@ -130,3 +118,35 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+{
+  /* 
+      <View style={styles.actionSection}>
+        
+
+        <View
+          style={[styles.actionsContainer, { justifyContent: "flex-start" }]}
+        >
+          <View style={styles.outerActionButton}>
+            <Pressable
+              android_ripple={{ color: "#ccc" }}
+              style={styles.innerActionButton}
+            >
+              <FontAwesomeIcon
+                style={styles.icon}
+                size={25}
+                icon={faMessage}
+              ></FontAwesomeIcon>
+            </Pressable>
+          </View>
+          <Text style={styles.actionText}>Message NDRRMO</Text>
+        </View>
+      </View>
+      <View style={styles.locationSection}>
+        <Text style={styles.sectionTitle}>Your Location</Text>
+        <InputLocation
+          selectBuilding={selectBuilding}
+          setSelectBuilding={setSelectBuilding}
+        ></InputLocation>
+      </View> */
+}

@@ -10,6 +10,7 @@ import Helpme from "./screens/Helpme";
 import ToDo from "./screens/ToDo";
 import SafetyLocations from "./screens/SafetyLocations";
 import Announcements from "./screens/Announcements";
+import DisasterTodo from "./screens/DisasterTodo";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -31,6 +32,10 @@ export default function App() {
         <Stack.Screen name="Home" component={Home}></Stack.Screen>
         <Stack.Screen name="ToDo" component={ToDo}></Stack.Screen>
         <Stack.Screen name="Help" component={Helpme}></Stack.Screen>
+        <Stack.Screen
+          name="DisasterTodo"
+          component={DisasterTodo}
+        ></Stack.Screen>
         <Stack.Screen
           name="SafetyLocations"
           component={SafetyLocations}

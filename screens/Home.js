@@ -1,10 +1,10 @@
 import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 import bannerImage from "../assets/images/CHMSU.jpg";
+import { StatusBar } from "expo-status-bar";
 
 import { COLORS, FONTS } from "./../constants/theme";
 import HomeHeader from "./../components/HomeHeader";
 import todo from "../assets/images/todo.png";
-
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faBullhorn,
@@ -16,6 +16,7 @@ import {
 const Home = ({ navigation }) => {
   return (
     <View style={styles.homeContainer}>
+      <StatusBar style="auto"></StatusBar>
       <HomeHeader></HomeHeader>
       <View style={styles.mainSectionContainer}>
         <View style={styles.locationContainer}>
@@ -130,7 +131,8 @@ const styles = StyleSheet.create({
     paddingTop: 35,
 
     flex: 1,
-    backgroundColor: COLORS.secondary,
+    // backgroundColor: COLORS.secondary,
+    backgroundColor: "#fff",
     alignItems: "center",
   },
 

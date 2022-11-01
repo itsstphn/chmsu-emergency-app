@@ -7,10 +7,13 @@ import {
   TextInput,
   Pressable,
   Alert,
+  ImageBackground,
+  // StatusBar,
 } from "react-native";
 import logo from "../assets/images/chmsu-logo.jpg";
 import { COLORS, FONTS } from "./../constants/theme";
 import { StatusBar } from "expo-status-bar";
+import bgImg from "../assets/images/bg.jpg";
 
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState("");
@@ -33,15 +36,24 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.loginContainer}>
-      <StatusBar></StatusBar>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} resizeMode="contain" source={logo}></Image>
-      </View>
-      <View>
-        <Text style={styles.appName}>
-          CHMSU - BINALBAGAN{"\n"}Emergency{"\n"}Response
-        </Text>
-      </View>
+      <StatusBar style="auto"></StatusBar>
+      <ImageBackground source={bgImg} resizeMode="cover" style={styles.bgImg}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            resizeMode="contain"
+            source={logo}
+          ></Image>
+        </View>
+        <View>
+          <Text style={styles.appName}>
+            Welcome to CHMSU - Binalbagan{"\n"}
+          </Text>
+          <Text style={styles.appNamePrimary}>EMERGENCY</Text>
+          <Text style={styles.appNamePrimary2}>RESPONSE</Text>
+        </View>
+      </ImageBackground>
+
       <View style={styles.formContainer}>
         <TextInput
           keyboardType="email-address"
@@ -53,6 +65,7 @@ const Login = ({ navigation }) => {
           placeholder="Password"
           style={styles.formInput}
         ></TextInput>
+        <Text style={styles.forgot}>Forgot Password?</Text>
         <View style={styles.outerButton}>
           <Pressable
             android_ripple={{ color: COLORS.ripplePrimary }}
@@ -62,14 +75,13 @@ const Login = ({ navigation }) => {
             <Text style={styles.buttonText}>LOGIN</Text>
           </Pressable>
         </View>
-        <Text style={styles.forgot}>Forgot Password?</Text>
       </View>
-      <View style={styles.footer}>
+      {/* <View style={styles.footer}>
         <Text style={styles.footerText}>
           A Capstone Project by Bless Sumagaysay, Micah Limaco, and Chris
           Fernandez
         </Text>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -81,39 +93,70 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 30,
     alignItems: "center",
-    backgroundColor: COLORS.secondary,
+    backgroundColor: "white",
+  },
+  bgImg: {
+    width: "100%",
+    height: 400,
+    alignItems: "center",
   },
   imageContainer: {
-    width: 90,
-    height: 90,
-    borderRadius: 90 / 2,
+    width: 120,
+    height: 120,
+    borderRadius: 120 / 2,
     overflow: "hidden",
-    margin: 100,
-    marginBottom: 30,
+    marginTop: 80,
+    marginBottom: 20,
   },
   image: {
     width: "100%",
     height: "100%",
   },
   appName: {
-    fontFamily: FONTS.bold,
+    fontFamily: FONTS.light,
     textAlign: "center",
-    fontSize: 28,
+    fontSize: 20,
+    lineHeight: 20,
+    color: "#000",
+  },
+  appNamePrimary: {
+    textAlign: "center",
+    fontFamily: FONTS.bold,
+    textShadowColor: "rgba(0, 0, 0, 0.2)",
+    textShadowOffset: { width: 0, height: 5 },
+    textShadowRadius: 10,
+    fontSize: 25,
+    lineHeight: 25,
+    marginTop: -20,
+    elevation: 3,
+  },
+  appNamePrimary2: {
+    textAlign: "center",
+    fontFamily: FONTS.bold,
+    textShadowColor: "rgba(0, 0, 0, 0.4)",
+    textShadowOffset: { width: 0, height: 8 },
+    textShadowRadius: 10,
+    fontSize: 40,
     lineHeight: 40,
-    color: COLORS.primary,
   },
   formContainer: {
     marginVertical: 30,
+    width: 340,
+    height: 235,
+    paddingVertical: 30,
     alignItems: "center",
+    backgroundColor: "#fff",
+    marginTop: -80,
+    elevation: 5,
   },
   formInput: {
-    width: 300,
+    width: 280,
     height: 50,
     margin: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     paddingHorizontal: 20,
     backgroundColor: "#fff",
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: FONTS.regular,
     color: COLORS.primary,
     elevation: 3,
@@ -133,6 +176,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontFamily: FONTS.semiBold,
+    fontSize: 15,
     textAlign: "center",
   },
   forgot: {
