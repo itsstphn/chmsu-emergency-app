@@ -11,6 +11,64 @@ import ToDo from "./screens/ToDo";
 import SafetyLocations from "./screens/SafetyLocations";
 import Announcements from "./screens/Announcements";
 import DisasterTodo from "./screens/DisasterTodo";
+import { AuthContextProvider } from "./context/AuthContext";
+import { LogBox } from "react-native";
+import Signup from "./screens/Signup";
+import { useAuthContext } from "./hooks/useAuthContext";
+import { UserDataContextProvider } from "./context/UserDataContext";
+
+LogBox.ignoreAllLogs();
+
+const AuthStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Login" component={Login}></Stack.Screen>
+      <Stack.Screen name="Signup" component={Signup}></Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+
+const AuthenticatedStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="Home"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Home" component={Home}></Stack.Screen>
+      <Stack.Screen name="ToDo" component={ToDo}></Stack.Screen>
+      <Stack.Screen name="Help" component={Helpme}></Stack.Screen>
+      <Stack.Screen name="DisasterTodo" component={DisasterTodo}></Stack.Screen>
+      <Stack.Screen
+        name="SafetyLocations"
+        component={SafetyLocations}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="Announcements"
+        component={Announcements}
+      ></Stack.Screen>
+    </Stack.Navigator>
+  );
+};
+
+const Screens = () => {
+  const { user, authIsReady } = useAuthContext();
+  return (
+    <>
+      {authIsReady && (
+        <NavigationContainer>
+          {user ? (
+            <AuthenticatedStack></AuthenticatedStack>
+          ) : (
+            <AuthStack></AuthStack>
+          )}
+        </NavigationContainer>
+      )}
+    </>
+  );
+};
 
 export default function App() {
   const [loaded] = useFonts({
@@ -23,28 +81,12 @@ export default function App() {
 
   if (!loaded) return null;
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{ headerShown: false }}
-      >
-        <Stack.Screen name="Login" component={Login}></Stack.Screen>
-        <Stack.Screen name="Home" component={Home}></Stack.Screen>
-        <Stack.Screen name="ToDo" component={ToDo}></Stack.Screen>
-        <Stack.Screen name="Help" component={Helpme}></Stack.Screen>
-        <Stack.Screen
-          name="DisasterTodo"
-          component={DisasterTodo}
-        ></Stack.Screen>
-        <Stack.Screen
-          name="SafetyLocations"
-          component={SafetyLocations}
-        ></Stack.Screen>
-        <Stack.Screen
-          name="Announcements"
-          component={Announcements}
-        ></Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <AuthContextProvider>
+        <UserDataContextProvider>
+          <Screens></Screens>
+        </UserDataContextProvider>
+      </AuthContextProvider>
+    </>
   );
 }

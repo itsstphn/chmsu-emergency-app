@@ -16,7 +16,6 @@ const DisasterTodo = ({ route }) => {
       : disaster === "typhoon"
       ? typhoon
       : fire;
-  console.log(disaster);
   return (
     <View style={styles.container}>
       {/* <ScrollView style={styles.scroll}> */}

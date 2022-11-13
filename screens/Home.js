@@ -12,10 +12,15 @@ import {
   faPeopleRoof,
   faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
+import { useAuthContext } from "../hooks/useAuthContext";
+import AuthStatus from "../components/AuthStatus";
 
 const Home = ({ navigation }) => {
+  const { user } = useAuthContext();
+
   return (
     <View style={styles.homeContainer}>
+      {user && <AuthStatus></AuthStatus>}
       <StatusBar style="auto"></StatusBar>
       <HomeHeader></HomeHeader>
       <View style={styles.mainSectionContainer}>

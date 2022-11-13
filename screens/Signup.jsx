@@ -14,19 +14,24 @@ import logo from "../assets/images/chmsu-logo.jpg";
 import { COLORS, FONTS } from "./../constants/theme";
 import { StatusBar } from "expo-status-bar";
 import bgImg from "../assets/images/bg.jpg";
-import useSignin from "./../hooks/useSignin";
+import { useSignup } from "./../hooks/useSignup";
 
-const Login = ({ navigation }) => {
+const Signup = ({ navigation }) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signin, error, isPending } = useSignin();
+  const { signup, error, isPending } = useSignup();
 
-  const handleLoginPress = () => {
-    signin(email, password);
-    setEmail("");
-    setPassword("");
+  const handleLoginPress = async () => {
+    signup(firstName, lastName, mobileNumber, email, password);
   };
+
+  if (error) {
+    Alert.alert(error);
+  }
 
   return (
     <View style={styles.loginContainer}>
@@ -40,15 +45,34 @@ const Login = ({ navigation }) => {
           ></Image>
         </View>
         <View>
-          <Text style={styles.appName}>
-            Welcome to CHMSU - Binalbagan{"\n"}
-          </Text>
+          <Text style={styles.appName}>Welcome to CHMSU - Binalbagan</Text>
           <Text style={styles.appNamePrimary}>EMERGENCY</Text>
           <Text style={styles.appNamePrimary2}>RESPONSE</Text>
         </View>
       </ImageBackground>
 
       <View style={styles.formContainer}>
+        <TextInput
+          // keyboardType="email-address"
+          placeholder="First Name"
+          value={firstName}
+          onChangeText={(text) => setFirstName(text)}
+          style={styles.formInput}
+        ></TextInput>
+        <TextInput
+          // keyboardType="email-address"
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={(text) => setLastName(text)}
+          style={styles.formInput}
+        ></TextInput>
+        <TextInput
+          keyboardType="phone-pad"
+          placeholder="Mobile Number"
+          value={mobileNumber}
+          onChangeText={(text) => setMobileNumber(text)}
+          style={styles.formInput}
+        ></TextInput>
         <TextInput
           keyboardType="email-address"
           placeholder="Email"
@@ -64,11 +88,8 @@ const Login = ({ navigation }) => {
           style={styles.formInput}
         ></TextInput>
         <Text style={styles.forgot}>Forgot Password?</Text>
-        <Text
-          style={styles.forgot}
-          onPress={() => navigation.replace("Signup")}
-        >
-          Sign Up
+        <Text style={styles.forgot} onPress={() => navigation.replace("Login")}>
+          Login
         </Text>
         <View style={styles.outerButton}>
           <Pressable
@@ -76,10 +97,11 @@ const Login = ({ navigation }) => {
             style={styles.innerButton}
             onPress={handleLoginPress}
           >
-            <Text style={styles.buttonText}>LOGIN</Text>
+            <Text style={styles.buttonText}>
+              {isPending ? "Loading" : `SIGNUP`}
+            </Text>
           </Pressable>
         </View>
-        {error && <Text style={{ color: "red" }}>{error}</Text>}
       </View>
       {/* <View style={styles.footer}>
         <Text style={styles.footerText}>
@@ -91,12 +113,12 @@ const Login = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default Signup;
 
 const styles = StyleSheet.create({
   loginContainer: {
     flex: 1,
-    paddingTop: 30,
+    // paddingTop: 30,
     alignItems: "center",
     backgroundColor: "white",
   },
@@ -132,7 +154,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
     fontSize: 25,
     lineHeight: 25,
-    marginTop: -20,
+    // marginTop: -10,
     elevation: 3,
   },
   appNamePrimary2: {
@@ -147,8 +169,8 @@ const styles = StyleSheet.create({
   formContainer: {
     marginVertical: 30,
     width: 340,
-    height: 235,
-    paddingVertical: 30,
+    height: 440,
+    paddingVertical: 20,
     alignItems: "center",
     backgroundColor: "#fff",
     marginTop: -80,
@@ -167,9 +189,8 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   outerButton: {
-    margin: 20,
-    width: 110,
-
+    margin: 10,
+    width: 120,
     overflow: "hidden",
     borderRadius: 15,
     backgroundColor: COLORS.primary,

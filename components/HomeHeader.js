@@ -62,7 +62,6 @@ export default HomeHeader;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    marginTop: 10,
     height: 150,
     width: "90%",
     paddingHorizontal: 20,
