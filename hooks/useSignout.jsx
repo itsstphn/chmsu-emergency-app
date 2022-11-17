@@ -9,6 +9,7 @@ export const useSignout = () => {
   const [isPending, setIsPending] = useState(false);
   const [isCancelled, setIsCancelled] = useState(false);
   const { dispatch: authDispatch } = useAuthContext();
+  const { dispatch: userDataDispatch } = useUserDataContext();
 
   const signout = async () => {
     setError(null);
@@ -19,6 +20,8 @@ export const useSignout = () => {
 
       console.log("has logged out");
       authDispatch({ type: "SIGNOUT" });
+      userDataDispatch({ type: "SIGNOUT" });
+
       !isCancelled && setIsPending(false);
     } catch (error) {
       if (!isCancelled) {

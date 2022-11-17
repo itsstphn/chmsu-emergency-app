@@ -16,7 +16,9 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import AuthStatus from "../components/AuthStatus";
 
 const Home = ({ navigation }) => {
-  const { user } = useAuthContext();
+  const { user, isAdmin } = useAuthContext();
+
+  console.log(isAdmin);
 
   return (
     <View style={styles.homeContainer}>

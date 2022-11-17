@@ -10,7 +10,7 @@ const authReducer = (state, action) => {
     case "SIGNIN":
       return { ...state, user: action.payload };
     case "SIGNOUT":
-      return { ...state, user: null };
+      return { ...state, user: null, isAdmin: false };
     case "AUTH_IS_READY":
       return { ...state, user: action.payload, authIsReady: true };
     case "SET_ADMIN":
@@ -35,8 +35,9 @@ export const AuthContextProvider = ({ children }) => {
         const docRef = doc(db, "users", user.uid);
         const response = await getDoc(docRef);
         const userType = response.data().userType;
-        // console.log(userType);
-        dispatch({ type: "SET_ADMIN" });
+        console.log(userType);
+
+        userType === "admin" && dispatch({ type: "SET_ADMIN" });
       }
 
       return () => unsub();

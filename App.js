@@ -16,6 +16,8 @@ import { LogBox } from "react-native";
 import Signup from "./screens/Signup";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { UserDataContextProvider } from "./context/UserDataContext";
+import HomeAdmin from "./screens/Admin/HomeAdmin";
+import CreateAnnouncement from "./screens/Admin/CreateAnnouncement";
 
 LogBox.ignoreAllLogs();
 
@@ -31,25 +33,49 @@ const AuthStack = () => {
   );
 };
 
+const AdminStack = () => {
+  return <Stack.Navigator></Stack.Navigator>;
+};
+
 const AuthenticatedStack = () => {
+  const { isAdmin } = useAuthContext();
+  console.log("isAdmin: ", isAdmin);
   return (
-    <Stack.Navigator
-      initialRouteName="Home"
-      screenOptions={{ headerShown: false }}
-    >
-      <Stack.Screen name="Home" component={Home}></Stack.Screen>
-      <Stack.Screen name="ToDo" component={ToDo}></Stack.Screen>
-      <Stack.Screen name="Help" component={Helpme}></Stack.Screen>
-      <Stack.Screen name="DisasterTodo" component={DisasterTodo}></Stack.Screen>
-      <Stack.Screen
-        name="SafetyLocations"
-        component={SafetyLocations}
-      ></Stack.Screen>
-      <Stack.Screen
-        name="Announcements"
-        component={Announcements}
-      ></Stack.Screen>
-    </Stack.Navigator>
+    <>
+      {isAdmin ? (
+        <Stack.Navigator
+          initialRouteName="HomeAdmin"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="HomeAdmin" component={HomeAdmin}></Stack.Screen>
+          <Stack.Screen
+            name="CreateAnnouncement"
+            component={CreateAnnouncement}
+          ></Stack.Screen>
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="Home" component={Home}></Stack.Screen>
+          <Stack.Screen name="ToDo" component={ToDo}></Stack.Screen>
+          <Stack.Screen name="Help" component={Helpme}></Stack.Screen>
+          <Stack.Screen
+            name="DisasterTodo"
+            component={DisasterTodo}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="SafetyLocations"
+            component={SafetyLocations}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="Announcements"
+            component={Announcements}
+          ></Stack.Screen>
+        </Stack.Navigator>
+      )}
+    </>
   );
 };
 

@@ -3,36 +3,10 @@ import { View, Text, StyleSheet } from "react-native";
 import { COLORS, FONTS } from "../constants/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
+import useDate from "../hooks/useDate";
 
 const HomeHeader = () => {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const d = new Date();
-  let date = d.getDate();
-  let month = months[d.getMonth()];
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  let day = days[d.getDay()];
+  const { day, month, date } = useDate();
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerTextContainer}>
