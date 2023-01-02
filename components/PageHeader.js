@@ -6,8 +6,8 @@ import { COLORS, FONTS } from "../constants/theme";
 
 const PageHeader = ({
   navigation,
-
-  rippleColor,
+  home,
+  rippleColor = "grey",
   pageTitle,
   textColor,
 }) => {
@@ -15,7 +15,7 @@ const PageHeader = ({
     <View style={styles.headerContainer}>
       <View style={styles.outerBackButton}>
         <Pressable
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate(home)}
           android_ripple={{ color: rippleColor }}
           style={styles.innerBackButton}
         >

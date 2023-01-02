@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import { COLORS } from "../constants/theme";
 import { FONTS } from "../constants/theme";
@@ -10,17 +10,50 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import PageHeader from "../components/PageHeader";
 import InputLocation from "../components/InputLocation";
+import useDate from "./../hooks/useDate";
+import { useUserDataContext } from "./../hooks/useUserDataContext";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Helpme = ({ navigation }) => {
-  const [selectBuilding, setSelectBuilding] = useState(true);
+  const { user } = useAuthContext();
+  const { mobileNumber, name, location } = useUserDataContext();
+
+  const { firstName, lastName } = name;
+
+  // `https://maps.googleapis.com/maps/api/staticmap?center=10.173615,122.855334&zoom=18&size=330x1200&maptype=satellite&markers=color:red%7Clabel:S%7C${location.latitude},${location.longitude}&key=AIzaSyDVgCb2U7W0rRWPdI4fcP01rMd4iEFjQvk`
+
+  const locationUrl = location
+    ? `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=18&size=330x1200&maptype=satellite&markers=color:red%7Clabel:S%7C${location.latitude},${location.longitude}&key=AIzaSyDVgCb2U7W0rRWPdI4fcP01rMd4iEFjQvk`
+    : null;
+
+  console.log(locationUrl);
+
+  const { timestamp } = useDate();
+
+  useEffect(() => {
+    const sendLocation = async () => {
+      if (location === null) return;
+      await setDoc(doc(db, "SOS", user.uid), {
+        name: firstName + " " + lastName,
+        location: locationUrl,
+        mobileNumber,
+        timestamp,
+      });
+    };
+
+    sendLocation();
+  }, []);
 
   return (
     <View style={styles.helpContainer}>
       <PageHeader
         rippleColor={COLORS.ripplePrimary}
-        pageTitle="Calling..."
+        pageTitle="Notifying NDRRMO"
         textColor={"#fff"}
         navigation={navigation}
+        home="Home"
       ></PageHeader>
       <View style={styles.actionsContainer}>
         <View style={styles.outerActionButton}>

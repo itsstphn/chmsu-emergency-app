@@ -14,11 +14,34 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuthContext } from "../hooks/useAuthContext";
 import AuthStatus from "../components/AuthStatus";
+import { useUsersListContext } from "../hooks/useUsersListContext";
+import { useUserDataContext } from "../hooks/useUserDataContext";
+import { useEffect, useMemo, useState } from "react";
 
 const Home = ({ navigation }) => {
   const { user, isAdmin } = useAuthContext();
+  const [currentLocation, setCurrentLocation] = useState(null);
 
-  console.log(isAdmin);
+  // const { location } = useUserDataContext();
+
+  const { location } = useUserDataContext();
+
+  // address && console.log("address", address);
+  // const { location } = useUserDataContext();
+
+  // location && console.log("location", location);
+
+  // useEffect(() => {
+  //   location && setCurrentLocation(location);
+  // }, []);
+
+  // console.log("Home current Location: ", currentLocation);
+
+  // console.log("header: pending ", isLocationPending);
+
+  // if (!isLocationPending) {
+  //   console.log(address);
+  // }
 
   return (
     <View style={styles.homeContainer}>
@@ -33,7 +56,8 @@ const Home = ({ navigation }) => {
             icon={faLocationDot}
           ></FontAwesomeIcon>
           <Text style={styles.locationText}>
-            Enclaro, Binalbagan, Negros Occidental
+            {location &&
+              `${location?.address?.city}, ${location?.address?.subregion}`}
           </Text>
         </View>
         <View style={styles.outerTodo}>

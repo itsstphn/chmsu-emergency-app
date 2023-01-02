@@ -1,11 +1,32 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import { COLORS, FONTS } from "../constants/theme";
 import PageHeader from "./../components/PageHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faDotCircle } from "@fortawesome/free-solid-svg-icons";
+import MapView from "react-native-maps";
+import ImageViewer from "react-native-image-zoom-viewer";
+import { useUserDataContext } from "../hooks/useUserDataContext";
+
+const GOOGLE_MAPS_API = "AIzaSyDVgCb2U7W0rRWPdI4fcP01rMd4iEFjQvk";
 
 const SafetyLocations = ({ navigation }) => {
+  const { location } = useUserDataContext();
+
+  console.log("location: ", location);
+
+  // const mapsPreviewUrl = `https://maps.googleapis.com/maps/api/staticmap?center=10.173429012304776,122.85543777373755&zoom=17&size=500x1000&maptype=satellite&markers=color:blue%7Clabel:S%7C10.174286594661696,-122.85442503099087&key=${GOOGLE_MAPS_API}`;
+
+  const image = [
+    {
+      url: "",
+      height: "100%",
+      props: { source: require("../assets/images/blueprint.jpg") },
+    },
+  ];
+
+  // console.log("map", mapsPreviewUrl);
+
   return (
     <View style={styles.safetyContainer}>
       <PageHeader
@@ -13,6 +34,7 @@ const SafetyLocations = ({ navigation }) => {
         pageTitle="Safety Locations"
         textColor={COLORS.primary}
         rippleColor={"#ccc"}
+        home="Home"
       ></PageHeader>
       <View style={styles.legendContainer}>
         <View style={styles.item}>
@@ -31,11 +53,7 @@ const SafetyLocations = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.mapContainer}>
-        <Image
-          resizeMode="cover"
-          style={styles.map}
-          source={require("../assets/images/schoolmap.jpg")}
-        ></Image>
+        <ImageViewer imageUrls={image}></ImageViewer>
       </View>
     </View>
   );

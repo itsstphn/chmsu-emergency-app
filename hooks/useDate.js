@@ -1,3 +1,4 @@
+import moment from "moment/moment";
 import React from "react";
 
 const useDate = () => {
@@ -28,9 +29,11 @@ const useDate = () => {
     "Saturday",
   ];
 
+  const timestamp = moment().format("MMM D, YYYY, h:mm:ss a");
+
   let day = days[d.getDay()];
 
-  return { day, month, date };
+  return { day, month, date, timestamp };
 };
 
 export default useDate;

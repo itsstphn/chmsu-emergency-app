@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   ImageBackground,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -22,19 +24,59 @@ import {
   faLocationPin,
   faLocationPinLock,
   faMapLocation,
-  faMapLocationDot,
+  faPhone,
   faRightFromBracket,
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { useSignout } from "./../../hooks/useSignout";
 import useDate from "../../hooks/useDate";
-import { COLORS } from "../../constants/theme";
+import { COLORS, FONTS } from "../../constants/theme";
+import { useUsersListContext } from "../../hooks/useUsersListContext";
+import useWeather from "./../../hooks/useWeather";
+import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { useUserDataContext } from "../../hooks/useUserDataContext";
+import call from "react-native-phone-call";
 
 const HomeAdmin = ({ navigation }) => {
+  const [sos, setSos] = useState([]);
+  const { location } = useUserDataContext();
+
+  const { weather } = useWeather();
+
   const { signout, error, isPending } = useSignout();
   const handleLogoutPress = () => {
     signout();
   };
   const { day, month, date } = useDate();
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, "SOS"), (querySnapshot) => {
+      // data.push(doc.data().name);
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      setSos(data);
+    });
+    // console.log(data);
+    return () => unsub();
+  }, []);
+
+  function makeCall(phone) {
+    const args = {
+      number: phone,
+      prompt: true,
+    };
+    call(args).catch(console.error);
+  }
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleDeleteCaller = async (uid) => {
+    await deleteDoc(doc(db, "SOS", uid));
+  };
+
   return (
     <View style={styles.HomeAdmin}>
       <StatusBar style="auto"></StatusBar>
@@ -76,27 +118,31 @@ const HomeAdmin = ({ navigation }) => {
           </View>
           <View style={styles.weatherTextContainer}>
             <Text>{`${day}, ${month} ${date}`}</Text>
-            <Text>Enclaro Mostly Cloudy 31°C</Text>
+            <Text>
+              {weather?.desc} {weather?.temp}
+            </Text>
           </View>
         </View>
-        <View style={styles.location}>
-          <View style={styles.locationIconContainer}>
-            <FontAwesomeIcon
-              style={styles.locationIcon}
-              size={35}
-              icon={faLocationDot}
-            ></FontAwesomeIcon>
+        {location && (
+          <View style={styles.location}>
+            <View style={styles.locationIconContainer}>
+              <FontAwesomeIcon
+                style={styles.locationIcon}
+                size={35}
+                icon={faLocationDot}
+              ></FontAwesomeIcon>
+            </View>
+            <View style={styles.locationTextContainer}>
+              <Text>{location?.address?.city}</Text>
+            </View>
           </View>
-          <View style={styles.locationTextContainer}>
-            <Text>Baranggay Enclaro, Binalbagan City</Text>
-          </View>
-        </View>
+        )}
       </ImageBackground>
       <View style={styles.main}>
         <Text style={styles.mainHeaderText}>Welcome Admin,</Text>
         <Text>Swipe for more.</Text>
         <ScrollView horizontal>
-          <View style={styles.outerButton}>
+          {/* <View style={styles.outerButton}>
             <Pressable
               style={styles.innerButton}
               android_ripple={{ color: COLORS.ripplePrimary }}
@@ -108,7 +154,7 @@ const HomeAdmin = ({ navigation }) => {
               ></ImageBackground>
               <Text style={styles.buttonText}>Call/GPS</Text>
             </Pressable>
-          </View>
+          </View> */}
           <View style={styles.outerButton}>
             <Pressable
               style={styles.innerButton}
@@ -123,7 +169,7 @@ const HomeAdmin = ({ navigation }) => {
               <Text style={styles.buttonText}>Create Announcement</Text>
             </Pressable>
           </View>
-          <View style={styles.outerButton}>
+          {/* <View style={styles.outerButton}>
             <Pressable
               style={styles.innerButton}
               android_ripple={{ color: COLORS.ripplePrimary }}
@@ -135,11 +181,12 @@ const HomeAdmin = ({ navigation }) => {
               ></ImageBackground>
               <Text style={styles.buttonText}>Monitor Students</Text>
             </Pressable>
-          </View>
+          </View> */}
           <View style={styles.outerButton}>
             <Pressable
               style={styles.innerButton}
               android_ripple={{ color: COLORS.ripplePrimary }}
+              onPress={() => navigation.navigate("ListOfStudents")}
             >
               <ImageBackground
                 style={styles.buttonImage}
@@ -151,6 +198,61 @@ const HomeAdmin = ({ navigation }) => {
           </View>
         </ScrollView>
       </View>
+      <ScrollView style={styles.secondary}>
+        <Text style={styles.callersTitle}>Emergency Callers</Text>
+        {sos.length === 0 && <Text>No Callers as of the moment.</Text>}
+        {sos.map((caller) => (
+          <View style={styles.caller} key={caller.location}>
+            <View style={styles.callerDetails}>
+              <Text style={styles.callerText}>{caller.name}</Text>
+              <Text style={styles.callerText}>{caller.mobileNumber}</Text>
+            </View>
+
+            {/* <View style={styles.imageContainer}></View> */}
+            <Pressable onPress={() => setModalVisible(true)}>
+              <FontAwesomeIcon
+                style={styles.mapLocationIcon}
+                size={30}
+                icon={faMapLocation}
+              ></FontAwesomeIcon>
+            </Pressable>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Image
+                    style={styles.locationImage}
+                    source={{ uri: caller.location }}
+                  ></Image>
+                </View>
+              </View>
+            </Modal>
+            <Pressable
+              style={{ marginHorizontal: 20 }}
+              onPress={() => makeCall(caller.mobileNumber)}
+            >
+              <FontAwesomeIcon
+                style={{ color: "#1976d2" }}
+                size={30}
+                icon={faPhone}
+              ></FontAwesomeIcon>
+            </Pressable>
+            <Pressable onPress={() => handleDeleteCaller(caller.id)}>
+              <FontAwesomeIcon
+                style={{ color: "#d22519" }}
+                size={30}
+                icon={faX}
+              ></FontAwesomeIcon>
+            </Pressable>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -246,5 +348,54 @@ const styles = StyleSheet.create({
   buttonText: {
     height: 35,
     textAlign: "center",
+  },
+  callerLocation: {
+    width: "100%",
+    height: "100%",
+  },
+  secondary: {
+    padding: 15,
+  },
+  callersTitle: {
+    fontFamily: FONTS.bold,
+    fontSize: 15,
+  },
+  caller: {
+    marginVertical: 10,
+    flexDirection: "row",
+  },
+  callerDetails: {
+    width: 200,
+  },
+  callerText: {
+    fontSize: 16,
+    marginVertical: 2,
+  },
+  imageContainer: {
+    height: 300,
+    width: 100,
+  },
+  mapLocationIcon: {
+    color: COLORS.primary,
+  },
+  locationImage: {
+    height: 670,
+    width: 350,
+  },
+  modalView: {
+    margin: 20,
+    height: 700,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

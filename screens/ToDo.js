@@ -13,6 +13,7 @@ const ToDo = ({ navigation }) => {
         pageTitle="What to Do"
         textColor={COLORS.primary}
         navigation={navigation}
+        home="Home"
       ></PageHeader>
 
       <View style={styles.menuContainer}>
@@ -84,11 +85,11 @@ const ToDo = ({ navigation }) => {
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
             >
-              <Image
+              {/* <Image
                 style={styles.itemImage}
                 source={require("../assets/images/zombie.png")}
               ></Image>
-              <Text style={styles.itemText}>Apocalypse</Text>
+              <Text style={styles.itemText}>Apocalypse</Text> */}
             </Pressable>
           </View>
           <View style={styles.item}>
@@ -96,16 +97,16 @@ const ToDo = ({ navigation }) => {
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
             >
-              <Image
+              {/* <Image
                 style={styles.itemImage}
                 source={require("../assets/images/alien.png")}
               ></Image>
-              <Text style={styles.itemText}>Invasion</Text>
+              <Text style={styles.itemText}>Invasion</Text> */}
             </Pressable>
           </View>
         </View>
         <View style={styles.rowContainer}>
-          <View style={styles.item}>
+          {/* <View style={styles.item}>
             <Pressable
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
@@ -116,8 +117,8 @@ const ToDo = ({ navigation }) => {
               ></Image>
               <Text style={styles.itemText}></Text>
             </Pressable>
-          </View>
-          <View style={styles.item}>
+          </View> */}
+          {/* <View style={styles.item}>
             <Pressable
               style={styles.innerItem}
               android_ripple={{ color: "#ccc" }}
@@ -140,7 +141,7 @@ const ToDo = ({ navigation }) => {
               ></Image>
               <Text style={styles.itemText}></Text>
             </Pressable>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>

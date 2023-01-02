@@ -18,6 +18,8 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import { UserDataContextProvider } from "./context/UserDataContext";
 import HomeAdmin from "./screens/Admin/HomeAdmin";
 import CreateAnnouncement from "./screens/Admin/CreateAnnouncement";
+import { UsersListContextProvider } from "./context/UsersListContext";
+import ListOfStudents from "./screens/Admin/ListOfStudents";
 
 LogBox.ignoreAllLogs();
 
@@ -51,6 +53,11 @@ const AuthenticatedStack = () => {
           <Stack.Screen
             name="CreateAnnouncement"
             component={CreateAnnouncement}
+          ></Stack.Screen>
+
+          <Stack.Screen
+            name="ListOfStudents"
+            component={ListOfStudents}
           ></Stack.Screen>
         </Stack.Navigator>
       ) : (
@@ -110,7 +117,9 @@ export default function App() {
     <>
       <AuthContextProvider>
         <UserDataContextProvider>
-          <Screens></Screens>
+          <UsersListContextProvider>
+            <Screens></Screens>
+          </UsersListContextProvider>
         </UserDataContextProvider>
       </AuthContextProvider>
     </>

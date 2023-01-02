@@ -1,42 +1,65 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { collection, getDocs } from "firebase/firestore";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 import { COLORS, FONTS } from "../constants/theme";
+import { db } from "../firebase/config";
 import PageHeader from "./../components/PageHeader";
 
 const Announcements = ({ navigation }) => {
+  const [announcements, setAnnouncements] = useState([]);
+
+  useEffect(() => {
+    const getAnnouncements = async () => {
+      const querySnapshot = await getDocs(collection(db, "announcements"));
+
+      const data = [];
+
+      querySnapshot.forEach((doc) => {
+        // setAnnouncements((prev) => [...prev, doc.data()]);
+        data.push(doc.data());
+        // console.log(doc.data());
+      });
+
+      setAnnouncements(_.reverse(data));
+
+      return data;
+    };
+    getAnnouncements();
+  }, []);
+
+  // const announcements = getAnnouncements().then(res => );
+
+  // console.log(announcements);
+
+  const renderedItem = ({ item }) => (
+    <View style={styles.item}>
+      <View style={styles.messageContainer}>
+        <Text style={styles.message}>{item.message}</Text>
+      </View>
+      <View style={styles.details}>
+        <Text style={styles.detailsSource}>-CHMSU</Text>
+        <Text style={styles.detailsTime}>{item.timestamp}</Text>
+      </View>
+    </View>
+  );
+
   return (
     <View style={styles.announcementsContainer}>
       <PageHeader
         navigation={navigation}
         textColor={COLORS.primary}
-        pageTitle="2 Announcements"
+        pageTitle="Announcements"
         rippleColor={COLORS.rippleSecondary}
+        home="Home"
       ></PageHeader>
       <View style={styles.announcements}>
-        <View style={styles.item}>
-          <View style={styles.messageContainer}>
-            <Text style={styles.message}>
-              No classes for tomorrow, August 15, 2022, nationwide due to
-              typhoon Odette 2.0
-            </Text>
-          </View>
-          <View style={styles.details}>
-            <Text style={styles.detailsSource}>-NDRRMO</Text>
-            <Text style={styles.detailsTime}>2 hours ago</Text>
-          </View>
-        </View>
-        <View style={styles.item}>
-          <View style={styles.messageContainer}>
-            <Text style={styles.message}>
-              The school will be holding an annual earthquake drill next week,
-              August 20, 2022. Perfect attendance is expected.
-            </Text>
-          </View>
-          <View style={styles.details}>
-            <Text style={styles.detailsSource}>-NDRRMO</Text>
-            <Text style={styles.detailsTime}>6 hours ago</Text>
-          </View>
-        </View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={announcements}
+          renderItem={renderedItem}
+          keyExtractor={(item) => item.timestamp}
+        ></FlatList>
       </View>
     </View>
   );
@@ -56,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   item: {
-    height: 120,
+    minHeight: 120,
     marginBottom: 20,
     width: 340,
     alignItems: "center",
@@ -67,6 +90,7 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     width: "100%",
+    // height: "100%",
   },
   message: {
     fontFamily: FONTS.regular,

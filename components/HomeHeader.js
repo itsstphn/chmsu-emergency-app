@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS, FONTS } from "../constants/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCloudSun } from "@fortawesome/free-solid-svg-icons";
 import useDate from "../hooks/useDate";
+import { useUserDataContext } from "../hooks/useUserDataContext";
+import useWeather from "./../hooks/useWeather";
 
 const HomeHeader = () => {
   const { day, month, date } = useDate();
+
+  const { weather } = useWeather();
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.headerTextContainer}>
@@ -24,9 +29,11 @@ const HomeHeader = () => {
         <Text style={styles.weatherText}>
           {day}, {month} {date}
         </Text>
-        <Text style={styles.weatherText}>Enclaro, Mostly Cloudy</Text>
+        <Text style={styles.weatherText}>{weather?.desc}</Text>
 
-        <Text style={[styles.weatherText, { fontSize: 25 }]}>30°C</Text>
+        <Text style={[styles.weatherText, { fontSize: 25 }]}>
+          {weather?.temp}
+        </Text>
       </View>
     </View>
   );
