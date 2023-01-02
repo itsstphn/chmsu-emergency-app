@@ -40,7 +40,10 @@ import call from "react-native-phone-call";
 
 const HomeAdmin = ({ navigation }) => {
   const [sos, setSos] = useState([]);
+
   const { location } = useUserDataContext();
+
+  location && console.log("location is:", location);
 
   const { weather } = useWeather();
 
@@ -76,6 +79,8 @@ const HomeAdmin = ({ navigation }) => {
   const handleDeleteCaller = async (uid) => {
     await deleteDoc(doc(db, "SOS", uid));
   };
+
+  const [callerLocationImg, setCallerLocationImg] = useState(null);
 
   return (
     <View style={styles.HomeAdmin}>
@@ -209,7 +214,12 @@ const HomeAdmin = ({ navigation }) => {
             </View>
 
             {/* <View style={styles.imageContainer}></View> */}
-            <Pressable onPress={() => setModalVisible(true)}>
+            <Pressable
+              onPress={() => {
+                setCallerLocationImg(caller.location);
+                setModalVisible(true);
+              }}
+            >
               <FontAwesomeIcon
                 style={styles.mapLocationIcon}
                 size={30}
@@ -222,13 +232,14 @@ const HomeAdmin = ({ navigation }) => {
               visible={modalVisible}
               onRequestClose={() => {
                 setModalVisible(!modalVisible);
+                setCallerLocationImg(null);
               }}
             >
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Image
                     style={styles.locationImage}
-                    source={{ uri: caller.location }}
+                    source={{ uri: callerLocationImg }}
                   ></Image>
                 </View>
               </View>

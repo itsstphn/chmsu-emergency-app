@@ -26,12 +26,16 @@ const Signup = ({ navigation }) => {
   const { signup, error, isPending } = useSignup();
 
   const handleLoginPress = async () => {
+    if (!firstName || !lastName || !mobileNumber || !email || !password) {
+      Alert.alert("Please complete all fields!");
+      return;
+    }
     signup(firstName, lastName, mobileNumber, email, password);
   };
 
-  if (error) {
-    Alert.alert(error);
-  }
+  // if (error) {
+  //   Alert.alert(error);
+  // }
 
   return (
     <View style={styles.loginContainer}>
@@ -102,6 +106,7 @@ const Signup = ({ navigation }) => {
             </Text>
           </Pressable>
         </View>
+        {error && <Text style={{ color: "red" }}>{error}</Text>}
       </View>
       {/* <View style={styles.footer}>
         <Text style={styles.footerText}>

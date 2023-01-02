@@ -40,7 +40,7 @@ export const UserDataContextProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    let abortController = new AbortController();
+    // let abortController = new AbortController();
 
     (async () => {
       if (user) {
@@ -58,32 +58,38 @@ export const UserDataContextProvider = ({ children }) => {
         });
 
         // location
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          setErrorMsg("Permission to access location was denied");
-          setIsLocationPending(false);
-          return;
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        const address = await Location.reverseGeocodeAsync({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
-        dispatch({
-          type: "SET_LOCATION",
-          payload: {
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            address: address[0],
-          },
-        });
       }
     })();
-    return () => {
-      abortController.abort();
-    };
+    // return () => {
+    //   abortController.abort();
+    // };
   }, [user]);
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        setIsLocationPending(false);
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      dispatch({
+        type: "SET_LOCATION",
+        payload: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          address: address[0],
+        },
+      });
+    };
+    fetchLocation();
+  }, []);
 
   return (
     <UserDataContext.Provider value={{ ...state, dispatch }}>

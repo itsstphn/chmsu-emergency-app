@@ -7,6 +7,7 @@ const WEATHER_API = "9678e8482a02eded0f2297e578b09299";
 
 const useWeather = () => {
   const { location } = useUserDataContext();
+
   const [weather, setWeather] = useState(null);
   const [isWeatherPending, setIsWeatherPending] = useState(false);
 

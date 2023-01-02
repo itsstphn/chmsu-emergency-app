@@ -75,6 +75,7 @@ const Helpme = ({ navigation }) => {
           <Pressable
             android_ripple={{ color: "#ccc" }}
             style={styles.innerActionButton}
+            onPress={() => navigation.navigate("Home")}
           >
             <FontAwesomeIcon
               style={[styles.icon, { color: "red" }]}

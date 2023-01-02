@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 15,
   },
+  list: {
+    height: 720,
+  },
   item: {
     backgroundColor: COLORS.secondary,
     padding: 10,
