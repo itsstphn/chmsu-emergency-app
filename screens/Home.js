@@ -22,6 +22,8 @@ const Home = ({ navigation }) => {
   const { user, isAdmin } = useAuthContext();
   const [currentLocation, setCurrentLocation] = useState(null);
 
+  console.log(user);
+
   // const { location } = useUserDataContext();
 
   const { location } = useUserDataContext();

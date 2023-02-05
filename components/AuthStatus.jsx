@@ -15,7 +15,6 @@ const AuthStatus = () => {
 
   const handleLogoutPress = () => {
     signout();
-    console.log("logged out clicked");
   };
 
   return (

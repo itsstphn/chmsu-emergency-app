@@ -15,6 +15,7 @@ import { useUserDataContext } from "./../hooks/useUserDataContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useAuthContext } from "../hooks/useAuthContext";
+import moment from "moment/moment";
 
 const Helpme = ({ navigation }) => {
   const { user } = useAuthContext();
@@ -28,7 +29,7 @@ const Helpme = ({ navigation }) => {
     ? `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=18&size=330x1200&maptype=satellite&markers=color:red%7Clabel:S%7C${location.latitude},${location.longitude}&key=AIzaSyDVgCb2U7W0rRWPdI4fcP01rMd4iEFjQvk`
     : null;
 
-  console.log(locationUrl);
+ 
 
   const { timestamp } = useDate();
 
@@ -40,6 +41,8 @@ const Helpme = ({ navigation }) => {
         location: locationUrl,
         mobileNumber,
         timestamp,
+        show: true,
+        month: moment().format("MMMM"),
       });
     };
 

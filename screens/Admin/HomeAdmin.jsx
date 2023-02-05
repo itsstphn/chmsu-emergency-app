@@ -33,7 +33,13 @@ import useDate from "../../hooks/useDate";
 import { COLORS, FONTS } from "../../constants/theme";
 import { useUsersListContext } from "../../hooks/useUsersListContext";
 import useWeather from "./../../hooks/useWeather";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useUserDataContext } from "../../hooks/useUserDataContext";
 import call from "react-native-phone-call";
@@ -42,8 +48,6 @@ const HomeAdmin = ({ navigation }) => {
   const [sos, setSos] = useState([]);
 
   const { location } = useUserDataContext();
-
-  location && console.log("location is:", location);
 
   const { weather } = useWeather();
 
@@ -58,7 +62,8 @@ const HomeAdmin = ({ navigation }) => {
       // data.push(doc.data().name);
       const data = [];
       querySnapshot.forEach((doc) => {
-        data.push({ ...doc.data(), id: doc.id });
+        const show = doc.data().show;
+        show && data.push({ ...doc.data(), id: doc.id });
       });
       setSos(data);
     });
@@ -77,7 +82,11 @@ const HomeAdmin = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleDeleteCaller = async (uid) => {
-    await deleteDoc(doc(db, "SOS", uid));
+    try {
+      await updateDoc(doc(db, "SOS", uid), { show: false });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const [callerLocationImg, setCallerLocationImg] = useState(null);
@@ -174,19 +183,7 @@ const HomeAdmin = ({ navigation }) => {
               <Text style={styles.buttonText}>Create Announcement</Text>
             </Pressable>
           </View>
-          {/* <View style={styles.outerButton}>
-            <Pressable
-              style={styles.innerButton}
-              android_ripple={{ color: COLORS.ripplePrimary }}
-            >
-              <ImageBackground
-                style={styles.buttonImage}
-                resizeMode="contain"
-                source={monitor}
-              ></ImageBackground>
-              <Text style={styles.buttonText}>Monitor Students</Text>
-            </Pressable>
-          </View> */}
+
           <View style={styles.outerButton}>
             <Pressable
               style={styles.innerButton}
@@ -199,6 +196,20 @@ const HomeAdmin = ({ navigation }) => {
                 source={list}
               ></ImageBackground>
               <Text style={styles.buttonText}>List of Students</Text>
+            </Pressable>
+          </View>
+          <View style={styles.outerButton}>
+            <Pressable
+              style={styles.innerButton}
+              android_ripple={{ color: COLORS.ripplePrimary }}
+              onPress={() => navigation.navigate("ReportCases")}
+            >
+              <ImageBackground
+                style={styles.buttonImage}
+                resizeMode="contain"
+                source={monitor}
+              ></ImageBackground>
+              <Text style={styles.buttonText}>Report Cases</Text>
             </Pressable>
           </View>
         </ScrollView>

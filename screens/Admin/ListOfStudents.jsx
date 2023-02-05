@@ -18,7 +18,6 @@ const ListOfStudents = ({ navigation }) => {
   const filteredUsersList = [
     ...usersList.filter((item) => item.userType === "student"),
   ];
-  console.log("filtered users: ", filteredUsersList);
 
   const renderedItem = ({ item }) => (
     <View key={item.email} style={styles.item}>

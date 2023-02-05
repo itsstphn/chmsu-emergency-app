@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import { COLORS, FONTS } from "../constants/theme";
 import PageHeader from "./../components/PageHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faDotCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faDotCircle } from "@fortawesome/free-solid-svg-icons";
 import MapView from "react-native-maps";
 import ImageViewer from "react-native-image-zoom-viewer";
 import { useUserDataContext } from "../hooks/useUserDataContext";
@@ -12,6 +12,8 @@ const GOOGLE_MAPS_API = "AIzaSyDVgCb2U7W0rRWPdI4fcP01rMd4iEFjQvk";
 
 const SafetyLocations = ({ navigation }) => {
   const { location } = useUserDataContext();
+  const images = ["Fire and Typhoon", "Earthquake"];
+  const [index, setIndex] = React.useState(0);
 
   console.log("location: ", location);
 
@@ -21,7 +23,12 @@ const SafetyLocations = ({ navigation }) => {
     {
       url: "",
       height: "100%",
-      props: { source: require("../assets/images/blueprint.jpg") },
+      props: { source: require("../assets/images/blueprint-1.gif") },
+    },
+    {
+      url: "",
+      height: "100%",
+      props: { source: require("../assets/images/blueprint-2.gif") },
     },
   ];
 
@@ -42,18 +49,26 @@ const SafetyLocations = ({ navigation }) => {
             style={[styles.colorIcon, { color: "green" }]}
             icon={faDotCircle}
           ></FontAwesomeIcon>
-          <Text style={styles.colorText}> - Safe Locations </Text>
+          <Text style={styles.colorText}>
+            {" "}
+            - Safe Location/s for {images[index]}
+          </Text>
         </View>
         <View style={styles.item}>
           <FontAwesomeIcon
-            style={[styles.colorIcon, { color: "red" }]}
-            icon={faDotCircle}
+            style={[styles.colorIcon, { color: "grey" }]}
+            icon={faCircleInfo}
+            size={12}
           ></FontAwesomeIcon>
-          <Text style={styles.colorText}> - Dangerous Locations </Text>
+          <Text style={styles.colorTextInfo}> - Swipe image </Text>
         </View>
       </View>
       <View style={styles.mapContainer}>
-        <ImageViewer imageUrls={image}></ImageViewer>
+        <ImageViewer
+          onChange={(index) => setIndex(index)}
+          saveToLocalByLongPress={false}
+          imageUrls={image}
+        ></ImageViewer>
       </View>
     </View>
   );
@@ -66,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
-    backgroundColor: COLORS.secondary,
+    backgroundColor: "#fff",
   },
 
   item: {
@@ -76,6 +91,9 @@ const styles = StyleSheet.create({
   },
   colorText: {
     fontFamily: FONTS.regular,
+  },
+  colorTextInfo: {
+    fontSize: 12,
   },
   mapContainer: {
     flex: 1,

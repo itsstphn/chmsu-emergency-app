@@ -1,10 +1,11 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { createContext, useEffect } from "react";
 import { useReducer, useState } from "react";
 import { db } from "../firebase/config";
 
 import * as Location from "expo-location";
 import { useAuthContext } from "./../hooks/useAuthContext";
+import { Alert } from "react-native";
 
 export const UserDataContext = createContext();
 
@@ -14,6 +15,7 @@ const userDataReducer = (state, action) => {
       return { ...state, name: action.payload };
     case "SET_LOCATION":
       return { ...state, location: action.payload };
+
     case "SET_USER_DETAILS":
       return {
         ...state,
@@ -21,7 +23,7 @@ const userDataReducer = (state, action) => {
         email: action.payload.email,
       };
     case "SIGNOUT":
-      return { ...state, name: null, location: null };
+      return { ...state, name: null };
     default:
       return state;
   }
@@ -29,8 +31,6 @@ const userDataReducer = (state, action) => {
 
 export const UserDataContextProvider = ({ children }) => {
   const { user } = useAuthContext();
-
-  console.log("userDAta reached");
 
   const [state, dispatch] = useReducer(userDataReducer, {
     name: null,
@@ -45,17 +45,24 @@ export const UserDataContextProvider = ({ children }) => {
     (async () => {
       if (user) {
         // firebase user data
-        const docRef = doc(db, "users", user.uid);
-        const response = await getDoc(docRef);
-        const firstName = response.data().firstName;
-        const lastName = response.data().lastName;
-        const mobileNumber = response.data().mobileNumber;
-        const email = response.data().mobileNumber;
-        dispatch({ type: "SET_NAME", payload: { firstName, lastName } });
-        dispatch({
-          type: "SET_USER_DETAILS",
-          payload: { mobileNumber, email },
-        });
+        try {
+          const docRef = doc(db, "users", user.uid);
+          const unsub = await onSnapshot(docRef, (response) => {
+            const firstName = response?.data().firstName;
+            const lastName = response?.data().lastName;
+            const mobileNumber = response?.data().mobileNumber;
+            const email = response?.data().mobileNumber;
+            dispatch({ type: "SET_NAME", payload: { firstName, lastName } });
+            console.log("response at context:", firstName, lastName);
+            dispatch({
+              type: "SET_USER_DETAILS",
+              payload: { mobileNumber, email },
+            });
+          });
+          return () => unsub();
+        } catch (error) {
+          console.log(error);
+        }
 
         // location
       }
@@ -69,24 +76,25 @@ export const UserDataContextProvider = ({ children }) => {
     const fetchLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        setIsLocationPending(false);
+        Alert.alert("Permission to access location was denied");
         return;
       }
 
       let location = await Location.getCurrentPositionAsync({});
       const address = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: location?.coords.latitude,
+        longitude: location?.coords.longitude,
       });
-      dispatch({
-        type: "SET_LOCATION",
-        payload: {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-          address: address[0],
-        },
-      });
+
+      address.length !== 0 &&
+        dispatch({
+          type: "SET_LOCATION",
+          payload: {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            address: address[0],
+          },
+        });
     };
     fetchLocation();
   }, []);

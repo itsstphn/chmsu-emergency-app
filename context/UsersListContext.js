@@ -8,7 +8,6 @@ export const UsersListContext = createContext();
 
 export const UsersListContextProvider = ({ children }) => {
   const [usersList, setUsersList] = useState([]);
-  console.log("usersListContext is opened");
 
   useEffect(() => {
     let abortController = new AbortController();

@@ -1,3 +1,4 @@
+import "expo-dev-client";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -20,6 +21,7 @@ import HomeAdmin from "./screens/Admin/HomeAdmin";
 import CreateAnnouncement from "./screens/Admin/CreateAnnouncement";
 import { UsersListContextProvider } from "./context/UsersListContext";
 import ListOfStudents from "./screens/Admin/ListOfStudents";
+import ReportCases from "./screens/Admin/ReportCases";
 
 LogBox.ignoreAllLogs();
 
@@ -41,7 +43,6 @@ const AdminStack = () => {
 
 const AuthenticatedStack = () => {
   const { isAdmin } = useAuthContext();
-  console.log("isAdmin: ", isAdmin);
   return (
     <>
       {isAdmin ? (
@@ -58,6 +59,11 @@ const AuthenticatedStack = () => {
           <Stack.Screen
             name="ListOfStudents"
             component={ListOfStudents}
+          ></Stack.Screen>
+
+          <Stack.Screen
+            name="ReportCases"
+            component={ReportCases}
           ></Stack.Screen>
         </Stack.Navigator>
       ) : (
